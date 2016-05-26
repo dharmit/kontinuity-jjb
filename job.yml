@@ -1,0 +1,14 @@
+- job:
+    name: kontinuity-provision-openshift-adb
+    node: atomic-sig 
+    properties:
+        - github:
+            url: https://github.com/dharmit/adb-ci-ansible
+    builders:
+        - pyscript
+
+- builder:
+    name: pyscript
+    builders:
+        - python:
+            !include-raw: './run.py'
