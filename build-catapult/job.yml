@@ -1,0 +1,31 @@
+- job:
+    name: kontinuity-build-catapult
+    node: kontinuity
+    properties:
+        - github:
+            url: http://github.com/redhat-kontinuity/catapult
+    publishers:
+        - email:
+            recipients: shahdharmit@gmail.com andy.block@gmail.com
+            send-to-individuals: true
+    builders:
+        - pyscript
+    triggers:
+        - pollscm:
+            cron: "* * * * *"
+            ignore-post-commit-hooks: True
+    scm:
+        - git:
+            url: http://github.com/redhat-kontinuity/catapult
+            basedir: catapult
+            branches:
+                - master
+    wrappers:
+        - workspace-cleanup:
+            check-parameter: "DO_WS_CLEANUP"
+
+- builder:
+    name: pyscript
+    builders:
+        - python:
+            !include-raw: './run.py'
