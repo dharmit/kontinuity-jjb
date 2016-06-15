@@ -12,7 +12,13 @@ req_url = \
     % api_key
 
 env_vars_path = "/home/kontinuity/env_vars"
-cwd = "/home/kontinuity/workspace/kontinuity-build-catapult/"
+# cwd = "/home/kontinuity/workspace/kontinuity-build-catapult/"
+
+branch = os.environ["branch"]
+tag = os.environ["ref"]
+
+if tag == "master" and branch == "master":
+    tag = "latest"
 
 
 def return_node_to_duffy(ssid):
@@ -41,7 +47,7 @@ for host in data['hosts']:
         # prevents clone: https://issues.jenkins-ci.org/browse/JENKINS-30405
         subprocess.check_call(['git', 'clone',
                                'http://github.com/dharmit/adb-ci-ansible'])
-        subprocess.check_call(['git', 'checkout', 'kontinuity'],
+        subprocess.check_call(['git', 'checkout', 'parameterized-build'],
                               cwd='adb-ci-ansible/')
     except:
         return_node_to_duffy(data["ssid"])
@@ -80,7 +86,8 @@ for host in data['hosts']:
         "github_client_secret=%s " % os.environ[
             "KONTINUITY_CATAPULT_GITHUB_APP_CLIENT_SECRET"
         ]
-    catapult_extra_args += "ose_host=%s" % host
+    catapult_extra_args += "ose_host=%s " % host
+    catapult_extra_args += "destination_tag=%s" % tag
 
     try:
         subprocess.check_call(
