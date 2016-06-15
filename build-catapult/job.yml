@@ -8,6 +8,27 @@
         - email:
             recipients: shahdharmit@gmail.com andy.block@gmail.com
             send-to-individuals: true
+    parameters:
+        - choice:
+            name: reference
+            choices:
+                - heads
+                - tags
+            description: Specific branch, tag or SHA to build
+        - choice:
+            name: spec
+            choices:
+                -
+                - tags/
+            description: Only change this value when building a tag
+        - string:
+            name: branch
+            default: master
+            description: Branch or tag to build
+        - string:
+            name: ref
+            default: master
+            description: Specific branch, tag or SHA to build
     builders:
         - pyscript
     triggers:
@@ -19,7 +40,7 @@
             url: http://github.com/redhat-kontinuity/catapult
             basedir: catapult
             branches:
-                - master
+                - ${spec}${ref}
     wrappers:
         - workspace-cleanup:
             check-parameter: "DO_WS_CLEANUP"
