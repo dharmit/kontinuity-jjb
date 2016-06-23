@@ -69,7 +69,7 @@ for host in data['hosts']:
         sys.exit("Failed to setup ADB with OpenShift")
 
     catapult_extra_args = \
-        "base_image=sabre1041/wildfly-100-centos7 "
+        "base_image=redhatdistortion/wildfly-100-centos7 "
     catapult_extra_args += \
         "oc_binary=%s " % os.environ["OC_BINARY"]
     catapult_extra_args += \
